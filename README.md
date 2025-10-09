@@ -300,6 +300,7 @@ Expo usage lives in:
 apps/native/lib/betterAuth/oauth/useAppleAuth.ts
 ```
 now done => `pnpm dev` from root => will take a moment for index creation if first run
+
 ---
 
 ## License
