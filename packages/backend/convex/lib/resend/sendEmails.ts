@@ -1,6 +1,6 @@
 import { Resend } from "@convex-dev/resend";
 import { components } from "../../_generated/api";
-import type { MutationCtx } from "../../_generated/server";
+import type { ActionCtx } from "../../_generated/server";
 import { requireEnv } from "../../util";
 
 export const resendHandler = new Resend(components.resend, {
@@ -14,7 +14,7 @@ export const resendHandler = new Resend(components.resend, {
 });
 
 export const sendEmail = async (
-	ctx: MutationCtx,
+	ctx: ActionCtx,
 	{
 		to,
 		subject,
