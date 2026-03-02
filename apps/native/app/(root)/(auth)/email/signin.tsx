@@ -1,25 +1,19 @@
-import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { Link } from "expo-router";
-import { Button, Spinner, TextField, useTheme } from "heroui-native";
+import { Button, InputGroup, Spinner, TextField } from "heroui-native";
 import { useState } from "react";
-import { Alert, Pressable, Text } from "react-native";
+import { Alert } from "react-native";
 import FormHeader, { FormContainer } from "@/components/form";
-import { authClient } from "@/lib/betterAuth/client";
+import { Icon } from "@/components/icon";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { authClient } from "@/lib/auth-client";
 
 export default function SignInRoute() {
-	const { colors } = useTheme();
-	/* ---------------------------------- state --------------------------------- */
+	const accentForeground = useThemeColor("accent-foreground");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
-	/* ----------------------------- handle sign in ----------------------------- */
+
 	const handleSignIn = async () => {
-		/**
-		 * FEAT: Add your own form validation validation here
-		 * i've been using tanstack form for react native with zod
-		 *
-		 * but this is just a base for you to get started
-		 */
 		if (!email.trim()) {
 			Alert.alert("Error", "Please enter your email");
 			return;
@@ -28,120 +22,72 @@ export default function SignInRoute() {
 			Alert.alert("Error", "Please enter your password");
 			return;
 		}
-
-		const { data, error } = await authClient.signIn.email(
+		await authClient.signIn.email(
 			{
 				email: email.trim(),
-				password: password,
+				password,
 				rememberMe: true,
 			},
 			{
-				onRequest: () => {
-					setIsLoading(true);
-				},
-
+				onRequest: () => setIsLoading(true),
 				onError: (ctx) => {
 					setIsLoading(false);
 					Alert.alert("Error", ctx.error.message || "Failed to sign in");
 				},
-				onSuccess: () => {
-					setIsLoading(false);
-					console.log("success!");
-				},
+				onSuccess: () => setIsLoading(false),
 			},
 		);
-		console.log(data, error);
 	};
-	/* --------------------------------- return --------------------------------- */
+
 	return (
 		<FormContainer>
-			{/* header */}
 			<FormHeader
 				title="Login"
 				description="Enter your email and password to login"
 			/>
-
-			{/* email text-field*/}
+			{/* email */}
 			<TextField isRequired>
-				<TextField.Input
-					className="h-16 rounded-3xl"
-					placeholder="Enter your email"
-					keyboardType="email-address"
-					autoCapitalize="none"
-					value={email}
-					onChangeText={setEmail}
-				>
-					<TextField.InputStartContent className="pointer-events-none pl-2">
-						<Ionicons
-							name="mail-outline"
-							size={20}
-							color={colors.mutedForeground}
-						/>
-					</TextField.InputStartContent>
-				</TextField.Input>
+				<InputGroup>
+					<InputGroup.Prefix isDecorative className="pl-4">
+						<Icon name="mail-outline" size={20} className="text-muted" />
+					</InputGroup.Prefix>
+					<InputGroup.Input
+						placeholder="Enter your email"
+						keyboardType="email-address"
+						autoCapitalize="none"
+						value={email}
+						onChangeText={setEmail}
+						textContentType="oneTimeCode"
+					/>
+				</InputGroup>
 			</TextField>
-			{/* password text-field */}
+			{/* password */}
 			<TextField isRequired>
-				<TextField.Input
-					className="h-16 rounded-3xl"
-					placeholder="Enter your password"
-					secureTextEntry
-					value={password}
-					onChangeText={setPassword}
-				>
-					<TextField.InputStartContent className="pointer-events-none pl-2">
-						<Ionicons
-							name="lock-closed-outline"
-							size={20}
-							color={colors.mutedForeground}
-						/>
-					</TextField.InputStartContent>
-					<TextField.InputEndContent className="pointer-events-none pr-2">
-						<Ionicons
-							name="eye-outline"
-							size={20}
-							color={colors.mutedForeground}
-						/>
-					</TextField.InputEndContent>
-				</TextField.Input>
+				<InputGroup>
+					<InputGroup.Prefix isDecorative className="pl-4">
+						<Icon name="lock-closed-outline" size={20} className="text-muted" />
+					</InputGroup.Prefix>
+					<InputGroup.Input
+						placeholder="Enter your password"
+						secureTextEntry
+						value={password}
+						onChangeText={setPassword}
+						textContentType="oneTimeCode"
+					/>
+					<InputGroup.Suffix isDecorative className="pr-4">
+						<Icon name="eye-outline" size={20} className="text-muted" />
+					</InputGroup.Suffix>
+				</InputGroup>
 			</TextField>
-
-			{/* submit button */}
-			<Button
-				onPress={handleSignIn}
-				disabled={isLoading}
-				size="lg"
-				className="rounded-3xl"
-			>
-				<Button.LabelContent>
-					{isLoading ? "Signing In..." : "Sign In"}
-				</Button.LabelContent>
-				<Button.EndContent>
-					{isLoading ? <Spinner color={colors.background} /> : null}
-				</Button.EndContent>
+			{/* submit */}
+			<Button onPress={handleSignIn} isDisabled={isLoading}>
+				<Button.Label>{isLoading ? "Signing In..." : "Sign In"}</Button.Label>
+				{isLoading ? <Spinner size="sm" color={accentForeground} /> : null}
 			</Button>
-			{/* forgot password route */}
+			{/* forgot password */}
 			<Link href="/(root)/(auth)/email/(reset)/request-password-reset" asChild>
-				<Button
-					variant="tertiary"
-					size="sm"
-					className="self-center rounded-3xl"
-				>
-					<Button.StartContent>
-						<Ionicons
-							name="lock-closed-outline"
-							size={14}
-							color={colors.defaultForeground}
-						/>
-					</Button.StartContent>
-					<Button.LabelContent>Forgot Password?</Button.LabelContent>
-					<Button.EndContent>
-						<Ionicons
-							name="chevron-forward"
-							size={16}
-							color={colors.defaultForeground}
-						/>
-					</Button.EndContent>
+				<Button variant="ghost" size="sm" className="self-center">
+					<Button.Label className="text-muted">Forgot Password?</Button.Label>
 				</Button>
 			</Link>
 		</FormContainer>

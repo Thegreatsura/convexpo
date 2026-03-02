@@ -1,19 +1,27 @@
-// Better-T-Stack configuration file
-// safe to delete
+// Better-T-Stack
+//
+// Website: https://www.better-t-stack.dev/
+// Stack Builder: https://www.better-t-stack.dev/new
+// Showcase: https://www.better-t-stack.dev/showcase
+//
+// Add new addons with: bunx create-better-t-stack add
+// This file is safe to delete
 
 {
 	"$schema": "https://r2.better-t-stack.dev/schema.json",
-	"version": "2.40.2",
+	"version": "3.22.0",
 	"createdAt": "2025-09-02T18:59:56.447Z",
+	"reproducibleCommand": "bun create better-t-stack@latest my-better-t-app --frontend native-uniwind --backend convex --runtime none --database none --orm none --api none --auth better-auth --payments none --addons biome turborepo --examples none --db-setup none --web-deploy none --server-deploy none --no-git --package-manager bun --no-install",
 	"database": "none",
 	"orm": "none",
 	"backend": "convex",
 	"runtime": "none",
-	"frontend": ["native-nativewind"],
+	"frontend": ["native-uniwind"],
 	"addons": ["biome", "turborepo"],
-	"examples": ["todo"],
-	"auth": "none",
-	"packageManager": "pnpm",
+	"examples": [],
+	"auth": "better-auth",
+	"payments": "none",
+	"packageManager": "bun",
 	"dbSetup": "none",
 	"api": "none",
 	"webDeploy": "none",

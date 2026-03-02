@@ -1,104 +1,30 @@
-import { Ionicons } from "@expo/vector-icons";
-import { Stack, useRouter } from "expo-router";
-import { useTheme } from "heroui-native";
-import { useState } from "react";
-import { Alert, Pressable, Text } from "react-native";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { useNavigationOptions } from "@/hooks/useNavigationOptions";
-import { authClient } from "@/lib/betterAuth/client";
+import { NativeTabs } from "expo-router/unstable-native-tabs";
+import { useThemeColor } from "heroui-native";
 
 export default function MainLayout() {
-	const { standard } = useNavigationOptions();
+	const accent = useThemeColor("accent");
 
 	return (
-		<Stack>
-			<Stack.Screen
-				name="index"
-				options={{
-					title: "Informational",
-					headerTitle: "Informational",
-					headerLargeTitle: true,
-					headerBackTitle: "Home",
-					...standard,
-					headerRight: () => <SettingsButton />,
-					headerLeft: () => <ThemeToggle />,
-				}}
-			/>
-			<Stack.Screen
-				name="settings"
-				options={{
-					title: "Settings",
-					headerBackButtonDisplayMode: "generic",
-					headerLargeTitle: true,
-					...standard,
-					headerRight: () => <SignOutButton />,
-				}}
-			/>
-		</Stack>
+		<NativeTabs>
+			<NativeTabs.Trigger name="(home)">
+				<NativeTabs.Trigger.Icon
+					sf={{ default: "globe.americas", selected: "globe.americas.fill" }}
+					md="home"
+					selectedColor={accent}
+				/>
+				<NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
+			</NativeTabs.Trigger>
+			<NativeTabs.Trigger name="settings">
+				<NativeTabs.Trigger.Icon
+					sf={{
+						default: "person.text.rectangle",
+						selected: "person.text.rectangle.fill",
+					}}
+					md="settings"
+					selectedColor={accent}
+				/>
+				<NativeTabs.Trigger.Label>Settings</NativeTabs.Trigger.Label>
+			</NativeTabs.Trigger>
+		</NativeTabs>
 	);
 }
-
-const SettingsButton = () => {
-	const { colors } = useTheme();
-	const router = useRouter();
-
-	return (
-		<Pressable
-			className="justify-center rounded-full p-2.5"
-			onPress={() => {
-				router.navigate("/settings");
-			}}
-		>
-			<Ionicons name="settings-outline" size={18} color={colors.foreground} />
-		</Pressable>
-	);
-};
-
-const SignOutButton = () => {
-	const [isSigningOut, setIsSigningOut] = useState(false);
-
-	const handleSignOut = async () => {
-		const { error, data } = await authClient.signOut(
-			{},
-			{
-				onRequest: () => {
-					setIsSigningOut(true);
-				},
-				onSuccess: () => {
-					setIsSigningOut(false);
-					console.log("Sign out successful");
-				},
-				onError: (ctx) => {
-					console.error(ctx.error);
-					Alert.alert("Error", ctx.error.message || "Failed to sign out");
-					setIsSigningOut(false);
-				},
-			},
-		);
-
-		console.log(data, error);
-	};
-
-	return (
-		<Pressable
-			className="justify-center rounded-full px-3"
-			disabled={isSigningOut}
-			onPress={() => {
-				Alert.alert("Sign Out", "Are you sure you want to sign out?", [
-					{
-						text: "Cancel",
-						style: "cancel",
-					},
-					{
-						text: "Sign Out",
-						onPress: async () => {
-							await handleSignOut();
-						},
-					},
-				]);
-			}}
-		>
-			<Text className="text-foreground">Sign Out</Text>
-		</Pressable>
-	);
-};

@@ -1,9 +1,12 @@
 {
 	"expo": {
-		"name": "Convexpo",
-		"slug": "convexpo",
+		"name": "My App",
+		"slug": "myapp",
 		"version": "1.0.0",
-		"scheme": "convexpo",
+		"scheme": "myapp",
+		"orientation": "portrait",
+		"icon": "./assets/icon.png",
+		"userInterfaceStyle": "automatic",
 		"web": {
 			"bundler": "metro",
 			"output": "static",
@@ -21,36 +24,27 @@
 					}
 				}
 			],
-			"expo-router",
+			"expo-apple-authentication",
+			"expo-font",
 			"expo-secure-store",
 			"expo-web-browser"
 		],
 		"experiments": {
 			"typedRoutes": true,
-			"tsconfigPaths": true,
 			"reactCompiler": true
 		},
-		"newArchEnabled": true,
-		"orientation": "portrait",
-		"icon": "./assets/icon.png",
-		"userInterfaceStyle": "automatic",
-		"splash": {
-			"image": "./assets/splash.png",
-			"resizeMode": "contain",
-			"backgroundColor": "#ffffff"
-		},
-		"assetBundlePatterns": ["**/*"],
 		"ios": {
-			"supportsTablet": true,
-			"bundleIdentifier": "com.colonystudio.convexpo"
+			"bundleIdentifier": "com.example.myapp",
+			"infoPlist": {
+				"ITSAppUsesNonExemptEncryption": false
+			}
 		},
 		"android": {
 			"adaptiveIcon": {
-				"foregroundImage": "./assets/logo-b.png",
+				"foregroundImage": "./assets/adaptive-icon.png",
 				"backgroundColor": "#ffffff"
 			},
-			"package": "com.colonystudio.convexpo",
-			"edgeToEdgeEnabled": true
+			"package": "com.example.myapp"
 		}
 	}
 }

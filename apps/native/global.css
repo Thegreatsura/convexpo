@@ -1,50 +1,64 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "uniwind";
+@import "heroui-native/styles";
 
-@layer base {
-	:root {
-		--background: 0 0% 100%;
-		--foreground: 222.2 84% 4.9%;
-		--card: 0 0% 100%;
-		--card-foreground: 222.2 84% 4.9%;
-		--popover: 0 0% 100%;
-		--popover-foreground: 222.2 84% 4.9%;
-		--primary: 221.2 83.2% 53.3%;
-		--primary-foreground: 210 40% 98%;
-		--secondary: 210 40% 96%;
-		--secondary-foreground: 222.2 84% 4.9%;
-		--muted: 210 40% 96%;
-		--muted-foreground: 215.4 16.3% 40%;
-		--accent: 210 40% 96%;
-		--accent-foreground: 222.2 84% 4.9%;
-		--destructive: 0 84.2% 60.2%;
-		--destructive-foreground: 210 40% 98%;
-		--border: 214.3 31.8% 91.4%;
-		--input: 214.3 31.8% 91.4%;
-		--ring: 221.2 83.2% 53.3%;
-		--radius: 8px;
+@source "./node_modules/heroui-native/lib";
+
+/* --------------------------------- Theme ---------------------------------- */
+/* Override HeroUI variables below. Only set what you want to change —        */
+/* everything else falls back to HeroUI defaults.                             */
+/* All variables: https://v3.heroui.com/docs/native/getting-started/colors    */
+
+@layer theme {
+	@variant light {
+		/* Brand */
+		--accent: oklch(0.17 0.015 80);
+		--accent-foreground: oklch(0.95 0.02 80);
+
+		/* Base */
+		/* --background: oklch(0.97 0 0); */
+		/* --foreground: oklch(0.21 0.006 286); */
+
+		/* Surfaces */
+		/* --surface: oklch(1 0 0); */
+		/* --surface-foreground: var(--foreground); */
+		/* --overlay: oklch(1 0 0); */
+		/* --overlay-foreground: var(--foreground); */
+
+		/* Status */
+		/* --success: oklch(0.73 0.19 151); */
+		/* --warning: oklch(0.78 0.16 72); */
+		/* --danger: oklch(0.65 0.23 26); */
 	}
 
-	.dark:root {
-		--background: 222.2 84% 4.9%;
-		--foreground: 210 40% 98%;
-		--card: 222.2 84% 4.9%;
-		--card-foreground: 210 40% 98%;
-		--popover: 222.2 84% 4.9%;
-		--popover-foreground: 210 40% 98%;
-		--primary: 217.2 91.2% 59.8%;
-		--primary-foreground: 222.2 84% 4.9%;
-		--secondary: 217.2 32.6% 17.5%;
-		--secondary-foreground: 210 40% 98%;
-		--muted: 217.2 32.6% 17.5%;
-		--muted-foreground: 215 20.2% 70%;
-		--accent: 217.2 32.6% 17.5%;
-		--accent-foreground: 210 40% 98%;
-		--destructive: 0 72% 51%;
-		--destructive-foreground: 210 40% 98%;
-		--border: 217.2 32.6% 17.5%;
-		--input: 217.2 32.6% 17.5%;
-		--ring: 224.3 76.3% 94.1%;
+	@variant dark {
+		/* Brand */
+		--accent: oklch(0.95 0.02 80);
+		--accent-foreground: oklch(0.17 0.015 80);
+
+		/* Base */
+		/* --background: oklch(0.12 0.005 286); */
+		/* --foreground: oklch(0.99 0 0); */
+
+		/* Surfaces */
+		/* --surface: oklch(0.21 0.006 286); */
+		/* --surface-foreground: var(--foreground); */
+		/* --overlay: oklch(0.21 0.006 286); */
+		/* --overlay-foreground: var(--foreground); */
+
+		/* Status */
+		/* --success: oklch(0.73 0.19 151); */
+		/* --warning: oklch(0.82 0.14 76); */
+		/* --danger: oklch(0.59 0.2 25); */
 	}
 }
+
+/* To add custom colors beyond HeroUI's built-in set:                         */
+/*                                                                            */
+/* 1. Define the variable in both light/dark variants above                    */
+/* 2. Register it with Tailwind so you can use bg-info, text-info, etc:       */
+/*                                                                            */
+/* @theme inline {                                                            */
+/*   --color-info: var(--info);                                               */
+/*   --color-info-foreground: var(--info-foreground);                          */
+/* }                                                                          */
