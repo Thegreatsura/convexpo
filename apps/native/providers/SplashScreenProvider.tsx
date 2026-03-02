@@ -1,8 +1,9 @@
-import { useConvexAuth } from "convex/react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import type React from "react";
 import { useEffect } from "react";
+
+import { useUser } from "@/contexts/user-context";
 import { delay } from "@/utils/delay";
 
 SplashScreen.preventAutoHideAsync();
@@ -17,7 +18,7 @@ export default function SplashScreenProvider({
 }: {
 	children: React.ReactNode;
 }) {
-	const { isLoading: isAuthLoading } = useConvexAuth();
+	const { isLoading: isUserLoading } = useUser();
 	const [fontsLoaded, fontError] = useFonts({});
 
 	if (fontError) {
@@ -25,13 +26,13 @@ export default function SplashScreenProvider({
 	}
 
 	useEffect(() => {
-		if (isAuthLoading || !fontsLoaded) {
+		if (isUserLoading || !fontsLoaded) {
 			return;
 		}
 		delay(350).then(() => {
 			SplashScreen.hideAsync();
 		});
-	}, [isAuthLoading, fontsLoaded]);
+	}, [isUserLoading, fontsLoaded]);
 
 	return <>{children}</>;
 }

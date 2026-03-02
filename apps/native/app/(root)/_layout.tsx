@@ -1,6 +1,6 @@
-import { useConvexAuth } from "convex/react";
 import { Stack } from "expo-router";
 
+import { useUser } from "@/contexts/user-context";
 import { useNavigationOptions } from "@/hooks/useNavigationOptions";
 
 export const unstable_settings = {
@@ -8,17 +8,20 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
-	const { isAuthenticated } = useConvexAuth();
+	const { user, isLoading } = useUser();
 	const { root } = useNavigationOptions();
+
+	// Use !!user for auth state — the Convex query cache persists across HMR
+	// (ConvexReactClient is at module scope), so user won't flicker during
+	// hot reloads unlike useConvexAuth().isAuthenticated.
+	const isAuthenticated = !!user;
 
 	return (
 		<Stack screenOptions={{ headerShown: false, ...root }}>
-			{/* AUTH STACK */}
-			<Stack.Protected guard={!isAuthenticated}>
+			<Stack.Protected guard={!isLoading && !isAuthenticated}>
 				<Stack.Screen name="(auth)" />
 			</Stack.Protected>
-			{/* AUTHENTICATED NESTED STACK */}
-			<Stack.Protected guard={isAuthenticated}>
+			<Stack.Protected guard={isLoading || isAuthenticated}>
 				<Stack.Screen name="(main)" />
 			</Stack.Protected>
 		</Stack>

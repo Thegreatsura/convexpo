@@ -47,7 +47,7 @@ export default function EmailLayout() {
 const CloseButton = () => {
 	return (
 		<Link href=".." asChild>
-			<Pressable className="justify-center rounded-full p-2" hitSlop={24}>
+			<Pressable className="justify-center p-2" hitSlop={24}>
 				<Icon name="close" size={22} className="text-foreground" />
 			</Pressable>
 		</Link>

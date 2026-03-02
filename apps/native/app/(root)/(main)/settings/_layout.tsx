@@ -47,7 +47,7 @@ const SignOutButton = () => {
 
 	return (
 		<Pressable
-			className="justify-center rounded-full px-3"
+			className="justify-center px-3"
 			disabled={isSigningOut}
 			onPress={() => {
 				Alert.alert("Sign Out", "Are you sure you want to sign out?", [

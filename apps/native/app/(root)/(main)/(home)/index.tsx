@@ -1,54 +1,68 @@
+import { Ionicons } from "@expo/vector-icons";
 import { api } from "@my-better-t-app/backend";
-import { useConvexAuth, useQuery } from "convex/react";
-import { Surface } from "heroui-native";
-import { ScrollView, Text, View } from "react-native";
+import { useQuery } from "convex/react";
+import { Card } from "heroui-native";
+import { ScrollView, View } from "react-native";
+import { useThemeColor } from "@/hooks/useThemeColor";
+
+function getStatusConfig(
+	isLoading: boolean,
+	isConnected: boolean,
+	colors: { success: string; danger: string; muted: string },
+) {
+	if (isLoading) {
+		return {
+			icon: "cloud-outline" as const,
+			color: colors.muted,
+			label: "Checking...",
+		};
+	}
+
+	if (isConnected) {
+		return {
+			icon: "cloud-done-outline" as const,
+			color: colors.success,
+			label: "Connected to Convex",
+		};
+	}
+
+	return {
+		icon: "cloud-offline-outline" as const,
+		color: colors.danger,
+		label: "Disconnected",
+	};
+}
 
 export default function HomeRoute() {
 	const healthCheck = useQuery(api.healthCheck.get);
-	const { isAuthenticated } = useConvexAuth();
-	const user = useQuery(api.auth.getCurrentUser, isAuthenticated ? {} : "skip");
+	const success = useThemeColor("success");
+	const danger = useThemeColor("danger");
+	const muted = useThemeColor("muted");
+
+	const isConnected = healthCheck === "OK";
+	const isLoading = healthCheck === undefined;
+
+	const status = getStatusConfig(isLoading, isConnected, {
+		success,
+		danger,
+		muted,
+	});
 
 	return (
-		<View className="flex-1">
-			<ScrollView
-				contentInsetAdjustmentBehavior="automatic"
-				contentContainerClassName="gap-4 pt-2 px-4 pb-24"
-			>
-				{/* User card */}
-				{user ? (
-					<Surface variant="secondary" className="rounded-3xl p-6">
-						<Text className="font-bold text-foreground text-lg">
-							{user.name}
-						</Text>
-						<Text className="pt-1 text-muted text-sm">{user.email}</Text>
-					</Surface>
-				) : null}
-
-				{/* API Status */}
-				<Surface variant="secondary" className="rounded-3xl p-6">
-					<Text className="mb-2 font-medium text-foreground">API Status</Text>
-					<View className="flex-row items-center gap-2">
-						<View
-							className={`h-2 w-2 rounded-full ${healthCheck === "OK" ? "bg-success" : "bg-danger"}`}
-						/>
-						<Text className="text-muted text-xs">
-							{healthCheck === undefined
-								? "Checking..."
-								: healthCheck === "OK"
-									? "Connected to Convex"
-									: "Disconnected"}
-						</Text>
+		<ScrollView
+			contentInsetAdjustmentBehavior="always"
+			contentContainerClassName="flex-grow px-4 py-2 gap-4"
+		>
+			{/* API Status */}
+			<Card variant="secondary">
+				<Card.Body className="flex-row items-center gap-3">
+					<Ionicons name={status.icon} size={20} color={status.color} />
+					<View>
+						<Card.Title>API Status</Card.Title>
+						<Card.Description>{status.label}</Card.Description>
 					</View>
-				</Surface>
-
-				{/* Placeholder for posts — will be brought back later */}
-				<Surface variant="secondary" className="rounded-3xl p-6">
-					<Text className="font-medium text-foreground">Posts</Text>
-					<Text className="pt-1 text-muted text-sm">
-						Post CRUD will be added back in the next phase.
-					</Text>
-				</Surface>
-			</ScrollView>
-		</View>
+				</Card.Body>
+			</Card>
+		</ScrollView>
 	);
 }

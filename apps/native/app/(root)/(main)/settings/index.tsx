@@ -1,18 +1,14 @@
-import { Ionicons } from "@expo/vector-icons";
-import { api } from "@my-better-t-app/backend";
-import { useConvexAuth, useQuery } from "convex/react";
-import { Button, Spinner } from "heroui-native";
+import { Button, Card } from "heroui-native";
 import { useState } from "react";
-import { Alert, ScrollView, Text, View } from "react-native";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { Alert, ScrollView } from "react-native";
 
+import { Icon } from "@/components/icon";
+import { useUser } from "@/contexts/user-context";
 import { authClient } from "@/lib/auth-client";
 
 export default function SettingsRoute() {
-	const foreground = useThemeColor("foreground");
+	const { user } = useUser();
 	const [isDeletingUser, setIsDeletingUser] = useState(false);
-	const { isAuthenticated } = useConvexAuth();
-	const user = useQuery(api.auth.getCurrentUser, isAuthenticated ? {} : "skip");
 
 	if (!user) return null;
 
@@ -35,43 +31,40 @@ export default function SettingsRoute() {
 	};
 
 	return (
-		<View className="flex-1">
-			<ScrollView
-				contentInsetAdjustmentBehavior="always"
-				contentContainerClassName="px-6 py-2 gap-4 min-h-full"
-			>
-				{/* User Info */}
-				<View className="flex">
-					<Text className="text-lg text-muted">{user.name}</Text>
-					<Text className="text-lg text-muted">{user.email}</Text>
-				</View>
+		<ScrollView
+			contentInsetAdjustmentBehavior="always"
+			contentContainerClassName="flex-grow px-4 py-2 gap-4"
+		>
+			{/* User Info */}
+			<Card variant="secondary">
+				<Card.Body>
+					<Card.Title>{user.name}</Card.Title>
+					<Card.Description>{user.email}</Card.Description>
+				</Card.Body>
+			</Card>
 
-				{/* Delete User */}
-				<View className="flex gap-4">
-					<Button
-						variant="tertiary"
-						size="sm"
-						className="self-start rounded-full"
-						isDisabled={isDeletingUser}
-						onPress={() => {
-							Alert.alert(
-								"Delete User",
-								"Are you sure you want to delete your account?",
-								[
-									{ text: "Cancel", style: "cancel" },
-									{ text: "Delete", onPress: handleDeleteUser },
-								],
-							);
-						}}
-					>
-						<Ionicons name="trash-outline" size={18} color={foreground} />
-						<Button.Label>
-							{isDeletingUser ? "Deleting..." : "Delete User"}
-						</Button.Label>
-						{isDeletingUser ? <Spinner size="sm" color={foreground} /> : null}
-					</Button>
-				</View>
-			</ScrollView>
-		</View>
+			{/* Delete User */}
+			<Button
+				variant="tertiary"
+				size="sm"
+				className="self-center"
+				isDisabled={isDeletingUser}
+				onPress={() => {
+					Alert.alert(
+						"Delete User",
+						"Are you sure you want to delete your account?",
+						[
+							{ text: "Cancel", style: "cancel" },
+							{ text: "Delete", onPress: handleDeleteUser },
+						],
+					);
+				}}
+			>
+				<Icon name="trash-bin" size={18} className="text-foreground" />
+				<Button.Label>
+					{isDeletingUser ? "Deleting..." : "Delete User"}
+				</Button.Label>
+			</Button>
+		</ScrollView>
 	);
 }

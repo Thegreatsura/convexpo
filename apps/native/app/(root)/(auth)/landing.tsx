@@ -1,12 +1,10 @@
-import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import { Button } from "heroui-native";
 import { Text, View } from "react-native";
-import { useThemeColor } from "@/hooks/useThemeColor";
+
+import { Icon } from "@/components/icon";
 
 export default function Landing() {
-	const foreground = useThemeColor("foreground");
-
 	return (
 		<View className="flex-1 gap-4 px-8 pt-safe pb-safe">
 			<View className="flex-1 justify-end">
@@ -17,11 +15,11 @@ export default function Landing() {
 			{/* OAuth buttons — placeholder for now */}
 			<View className="w-full flex-row gap-4">
 				<Button className="flex-1" size="lg" variant="tertiary" isDisabled>
-					<Ionicons name="logo-google" size={20} color={foreground} />
+					<Icon name="logo-google" size={20} className="text-foreground" />
 					<Button.Label>Google</Button.Label>
 				</Button>
 				<Button className="flex-1" size="lg" variant="tertiary" isDisabled>
-					<Ionicons name="logo-apple" size={20} color={foreground} />
+					<Icon name="logo-apple" size={20} className="text-foreground" />
 					<Button.Label>Apple</Button.Label>
 				</Button>
 			</View>

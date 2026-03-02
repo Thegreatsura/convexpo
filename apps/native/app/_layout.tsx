@@ -8,6 +8,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 
 import { AppThemeProvider } from "@/contexts/app-theme-context";
+import { UserProvider } from "@/contexts/user-context";
 import { authClient } from "@/lib/auth-client";
 import SplashScreenProvider from "@/providers/SplashScreenProvider";
 
@@ -23,9 +24,11 @@ export default function Layout() {
 				<AppThemeProvider>
 					<HeroUINativeProvider>
 						<ConvexBetterAuthProvider client={convex} authClient={authClient}>
-							<SplashScreenProvider>
-								<Slot />
-							</SplashScreenProvider>
+							<UserProvider>
+								<SplashScreenProvider>
+									<Slot />
+								</SplashScreenProvider>
+							</UserProvider>
 						</ConvexBetterAuthProvider>
 					</HeroUINativeProvider>
 				</AppThemeProvider>

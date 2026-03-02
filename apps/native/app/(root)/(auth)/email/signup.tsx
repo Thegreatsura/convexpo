@@ -1,15 +1,13 @@
-import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import { Button, InputGroup, Spinner, TextField } from "heroui-native";
 import { useState } from "react";
-import { Alert, Pressable, Text } from "react-native";
+import { Alert, Text } from "react-native";
+
 import FormHeader, { FormContainer } from "@/components/form";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { Icon } from "@/components/icon";
 import { authClient } from "@/lib/auth-client";
 
 export default function SignUpRoute() {
-	const accentForeground = useThemeColor("accent-foreground");
-	const muted = useThemeColor("muted");
 	/* ---------------------------------- state --------------------------------- */
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
@@ -66,7 +64,7 @@ export default function SignUpRoute() {
 			<TextField isRequired>
 				<InputGroup>
 					<InputGroup.Prefix isDecorative className="pl-4">
-						<Ionicons name="person-outline" size={20} color={muted} />
+						<Icon name="person-outline" size={20} className="text-muted" />
 					</InputGroup.Prefix>
 					<InputGroup.Input
 						placeholder="Enter your full name"
@@ -81,7 +79,7 @@ export default function SignUpRoute() {
 			<TextField isRequired>
 				<InputGroup>
 					<InputGroup.Prefix isDecorative className="pl-4">
-						<Ionicons name="mail-outline" size={20} color={muted} />
+						<Icon name="mail-outline" size={20} className="text-muted" />
 					</InputGroup.Prefix>
 					<InputGroup.Input
 						placeholder="Enter your email"
@@ -97,7 +95,7 @@ export default function SignUpRoute() {
 			<TextField isRequired>
 				<InputGroup>
 					<InputGroup.Prefix isDecorative className="pl-4">
-						<Ionicons name="lock-closed-outline" size={20} color={muted} />
+						<Icon name="lock-closed-outline" size={20} className="text-muted" />
 					</InputGroup.Prefix>
 					<InputGroup.Input
 						placeholder="Enter your password"
@@ -106,7 +104,7 @@ export default function SignUpRoute() {
 						onChangeText={setPassword}
 					/>
 					<InputGroup.Suffix isDecorative className="pr-4">
-						<Ionicons name="eye-outline" size={20} color={muted} />
+						<Icon name="eye-outline" size={20} className="text-muted" />
 					</InputGroup.Suffix>
 				</InputGroup>
 			</TextField>
@@ -114,7 +112,7 @@ export default function SignUpRoute() {
 			<TextField isRequired>
 				<InputGroup>
 					<InputGroup.Prefix isDecorative className="pl-4">
-						<Ionicons name="lock-closed-outline" size={20} color={muted} />
+						<Icon name="lock-closed-outline" size={20} className="text-muted" />
 					</InputGroup.Prefix>
 					<InputGroup.Input
 						placeholder="Confirm your password"
@@ -123,7 +121,7 @@ export default function SignUpRoute() {
 						onChangeText={setConfirmPassword}
 					/>
 					<InputGroup.Suffix isDecorative className="pr-4">
-						<Ionicons name="checkmark-outline" size={20} color={muted} />
+						<Icon name="checkmark-outline" size={20} className="text-muted" />
 					</InputGroup.Suffix>
 				</InputGroup>
 			</TextField>
@@ -132,7 +130,7 @@ export default function SignUpRoute() {
 				<Button.Label>
 					{isLoading ? "Creating Account..." : "Sign Up"}
 				</Button.Label>
-				{isLoading ? <Spinner size="sm" color={accentForeground} /> : null}
+				{isLoading ? <Spinner size="sm" /> : null}
 			</Button>
 			<Text className="px-14 text-center text-muted text-sm">
 				by continuing you agree to our{" "}
