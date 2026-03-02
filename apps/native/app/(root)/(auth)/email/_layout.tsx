@@ -10,9 +10,9 @@ export default function EmailLayout() {
 	return (
 		<Stack
 			screenOptions={{
+				...modal,
 				gestureEnabled: false,
 				headerTransparent: true,
-				...modal,
 			}}
 		>
 			<Stack.Screen

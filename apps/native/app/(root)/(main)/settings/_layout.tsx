@@ -9,13 +9,12 @@ export default function SettingsLayout() {
 	const { standard } = useNavigationOptions();
 
 	return (
-		<Stack>
+		<Stack screenOptions={standard}>
 			<Stack.Screen
 				name="index"
 				options={{
 					title: "Settings",
 					headerLargeTitle: true,
-					...standard,
 					headerRight: () => <SignOutButton />,
 				}}
 			/>

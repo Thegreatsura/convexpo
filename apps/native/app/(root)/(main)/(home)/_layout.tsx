@@ -7,13 +7,12 @@ export default function HomeLayout() {
 	const { standard } = useNavigationOptions();
 
 	return (
-		<Stack>
+		<Stack screenOptions={standard}>
 			<Stack.Screen
 				name="index"
 				options={{
 					title: "Home",
 					headerLargeTitle: true,
-					...standard,
 					headerLeft: () => <ThemeToggle />,
 				}}
 			/>

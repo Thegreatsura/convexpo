@@ -12,26 +12,14 @@ export default function RootLayout() {
 	const { root } = useNavigationOptions();
 
 	return (
-		<Stack>
+		<Stack screenOptions={{ headerShown: false, ...root }}>
 			{/* AUTH STACK */}
 			<Stack.Protected guard={!isAuthenticated}>
-				<Stack.Screen
-					name="(auth)"
-					options={{
-						headerShown: false,
-					}}
-				/>
+				<Stack.Screen name="(auth)" />
 			</Stack.Protected>
 			{/* AUTHENTICATED NESTED STACK */}
 			<Stack.Protected guard={isAuthenticated}>
-				<Stack.Screen
-					name="(main)"
-					options={{
-						title: "",
-						headerShown: false,
-						...root,
-					}}
-				/>
+				<Stack.Screen name="(main)" />
 			</Stack.Protected>
 		</Stack>
 	);

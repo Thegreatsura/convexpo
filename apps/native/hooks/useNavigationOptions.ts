@@ -8,37 +8,33 @@ export const useNavigationOptions = () => {
 	const background = useThemeColor("background");
 
 	return useMemo(() => {
-		const root: NativeStackNavigationOptions = {
-			contentStyle: {
-				backgroundColor: background,
-			},
-		};
-
 		const base: NativeStackNavigationOptions = {
 			headerTintColor: foreground,
 			headerTitleAlign: "center",
 			headerLargeTitleShadowVisible: false,
-			headerLargeTitleStyle: {
-				color: foreground,
-			},
+			headerLargeTitleStyle: { color: foreground },
 			headerShadowVisible: false,
 			contentStyle: { backgroundColor: background },
 		};
 
+		const platformHeader: NativeStackNavigationOptions = Platform.select({
+			ios: { headerStyle: { backgroundColor: "transparent" } },
+			default: { headerStyle: { backgroundColor: background } },
+		});
+
 		return {
-			root,
+			base,
+			root: {
+				contentStyle: { backgroundColor: background },
+			} satisfies NativeStackNavigationOptions,
 			standard: {
 				...base,
-				headerStyle: {
-					backgroundColor: Platform.OS === "ios" ? "transparent" : background,
-				},
+				...platformHeader,
 				headerTransparent: Platform.OS === "ios",
 			},
 			modal: {
 				...base,
-				headerStyle: {
-					backgroundColor: Platform.OS === "ios" ? "transparent" : background,
-				},
+				...platformHeader,
 			},
 		};
 	}, [foreground, background]);
