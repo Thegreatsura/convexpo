@@ -1,5 +1,5 @@
 {
-	"name": "my-better-t-app",
+	"name": "app",
 	"private": true,
 	"packageManager": "bun@1.3.3",
 	"type": "module",
@@ -25,16 +25,16 @@
 		"check-types": "turbo check-types",
 		"dev:native": "turbo -F native dev",
 		"dev:web": "turbo -F web dev",
-		"dev:server": "turbo -F @my-better-t-app/backend dev",
-		"dev:setup": "turbo -F @my-better-t-app/backend dev:setup"
+		"dev:server": "turbo -F @app/backend dev",
+		"dev:setup": "turbo -F @app/backend dev:setup"
 	},
 	"dependencies": {
-		"@my-better-t-app/env": "workspace:*",
+		"@app/env": "workspace:*",
 		"dotenv": "catalog:",
 		"zod": "catalog:"
 	},
 	"devDependencies": {
-		"@my-better-t-app/config": "workspace:*",
+		"@app/config": "workspace:*",
 		"@biomejs/biome": "^2.2.0",
 		"turbo": "^2.6.3",
 		"typescript": "catalog:"

@@ -5,8 +5,8 @@
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["./*"],
-			"@my-better-t-app/backend": ["../../packages/backend/index.ts"],
-			"@my-better-t-app/backend/*": ["../../packages/backend/*"]
+			"@app/backend": ["../../packages/backend/index.ts"],
+			"@app/backend/*": ["../../packages/backend/*"]
 		}
 	},
 	"include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]

@@ -1,6 +1,6 @@
 import "@/global.css";
+import { env } from "@app/env/native";
 import { ConvexBetterAuthProvider } from "@convex-dev/better-auth/react";
-import { env } from "@my-better-t-app/env/native";
 import { ConvexReactClient } from "convex/react";
 import { Slot } from "expo-router";
 import { HeroUINativeProvider } from "heroui-native";

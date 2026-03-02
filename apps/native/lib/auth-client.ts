@@ -1,9 +1,9 @@
+import { env } from "@app/env/native";
 import { expoClient } from "@better-auth/expo/client";
 import {
 	convexClient,
 	crossDomainClient,
 } from "@convex-dev/better-auth/client/plugins";
-import { env } from "@my-better-t-app/env/native";
 import { createAuthClient } from "better-auth/react";
 import Constants from "expo-constants";
 import * as SecureStore from "expo-secure-store";

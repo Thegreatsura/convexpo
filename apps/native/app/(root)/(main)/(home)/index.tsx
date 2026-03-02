@@ -1,5 +1,5 @@
+import { api } from "@app/backend";
 import { Ionicons } from "@expo/vector-icons";
-import { api } from "@my-better-t-app/backend";
 import { useQuery } from "convex/react";
 import { Card } from "heroui-native";
 import { ScrollView, View } from "react-native";

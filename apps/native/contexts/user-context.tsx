@@ -1,4 +1,4 @@
-import { api } from "@my-better-t-app/backend";
+import { api } from "@app/backend";
 import { useQuery } from "convex/react";
 import type React from "react";
 import { createContext, useContext, useMemo } from "react";

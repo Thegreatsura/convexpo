@@ -7,15 +7,15 @@ This project was bootstrapped with **[Better-T-Stack](https://github.com/AmanVar
 > To reproduce a similar starter, run:
 >
 > ```bash
-> pnpm create better-t-stack@latest my-better-t-app \
->  --frontend native-nativewind \
+> bun create better-t-stack@latest my-app \
+>  --frontend native-uniwind \
 >  --backend convex \
->  --runtime none --api none --auth none --database none --orm none --db-setup none \
->  --package-manager pnpm --no-git \
+>  --runtime none --api none --auth better-auth --database none --orm none --db-setup none \
+>  --package-manager bun --no-git \
 >  --web-deploy none --server-deploy none \
 >  --install \
->  --addons turborepo \
->  --examples todo
+>  --addons turborepo biome \
+>  --examples none
 > ```
 
 
@@ -38,8 +38,38 @@ convexpo/
 ├─ apps/
 │  └─ native/          # Expo App
 └─ packages/
-   └─ backend/         # Convex backend
+   ├─ backend/         # Convex backend
+   ├─ config/          # Shared TypeScript config
+   └─ env/             # Environment variables
 ```
+
+## Configure Your App
+
+Update `apps/native/app.json` with your app identity:
+
+```json
+{
+  "expo": {
+    "name": "Your App Name",
+    "slug": "yourapp",
+    "scheme": "yourapp",
+    "ios": {
+      "bundleIdentifier": "com.yourcompany.yourapp"
+    },
+    "android": {
+      "package": "com.yourcompany.yourapp"
+    }
+  }
+}
+```
+
+Then update the deep link scheme in `packages/backend/convex/auth.ts` to match:
+
+```ts
+const nativeAppUrl = process.env.NATIVE_APP_URL || "yourapp://";
+```
+
+> **Note:** The `scheme` in app.json must match the URL scheme in auth.ts for OAuth redirects to work correctly.
 
 ## Authentication Providers
 
@@ -61,15 +91,15 @@ This starter includes multiple authentication methods using Convex + Better Auth
 2. **Install root dependencies**:
 
    ```bash
-   pnpm install
+   bun install
    ```
 
 3. **Start dev** (Turborepo scripts will spawn native + backend):
 
    ```bash
-   pnpm run dev
+   bun dev
    ```
-   In the **convexpo#dev** terminal pane you should see your **Expo Go mobile URL scheme**
+   In the **native#dev** terminal pane you should see your **Expo Go mobile URL scheme**
 
     ```
    Metro waiting on exp://xxx.xxx.x.xx:xxxx
@@ -77,7 +107,7 @@ This starter includes multiple authentication methods using Convex + Better Auth
     > **⚠️ IMPORTANT:** if using expo go  **save for later**, you’ll need it for the backend environment variable. If using a dev build, we'll use the app `schema` from app.json for this.
 
 4. Configure Convex Backend
-In the **@convexpo/backend** terminal pane, the Convex wizard will prompt:
+In the **@app/backend** terminal pane, the Convex wizard will prompt:
 
    ```
    What would you like to configure (use arrow keys)
@@ -110,8 +140,8 @@ In the **@convexpo/backend** terminal pane, the Convex wizard will prompt:
     # For Expo Go development
     npx convex env set EXPO_MOBILE_URL=exp://xxx.xxx.x.xx:xxxx
 
-    # For custom app scheme (dev builds) from apps/native/app.json
-    npx convex env set EXPO_MOBILE_URL=convexpo://
+    # For custom app scheme (dev builds) - use your scheme from apps/native/app.json
+    npx convex env set EXPO_MOBILE_URL=myapp://
     ```
 
 
@@ -208,7 +238,7 @@ Uncomment Google in `packages/backend/convex/lib/betterAuth/createAuth.ts`
 
 Expo usage lives in `apps/native/app/(root)/(auth)/landing.tsx`
 
-now done => `pnpm dev` from root => will take a moment for index creation if first run
+now done => `bun dev` from root => will take a moment for index creation if first run
 ## Email & Password
 
 ### Prerequisites
@@ -261,7 +291,7 @@ now done => `pnpm dev` from root => will take a moment for index creation if fir
 	// 	},
 	// },
 ```
-now done => `pnpm dev` from root => will take a moment for index creation if first run
+now done => `bun dev` from root => will take a moment for index creation if first run
 
 ## Apple Login
 
@@ -274,7 +304,7 @@ If you want Apple Sign-In with Better Auth, see: [Better Auth Apple Docs](https:
 
 create a EAS Build it should ask you to provision ... this and that and to setup to your apple account. Then Once this is up. you go to the following
 
-on successful EAS Build you should now see in Apple Developer > Account > Identifiers > <project name> with com.colonystudio.convexpo > make sure to change to whatever your app name might be > press on it > Sign in With apple > Enable.
+on successful EAS Build you should now see in Apple Developer > Account > Identifiers > your app with the bundle ID from app.json (e.g., `com.example.myapp`) > press on it > Sign in With Apple > Enable.
 
 Uncomment Apple in `packages/backend/convex/lib/betterAuth/createAuth.ts`:
 
@@ -299,7 +329,7 @@ Expo usage lives in:
 ```
 apps/native/lib/betterAuth/oauth/useAppleAuth.ts
 ```
-now done => `pnpm dev` from root => will take a moment for index creation if first run
+now done => `bun dev` from root => will take a moment for index creation if first run
 
 ---
 

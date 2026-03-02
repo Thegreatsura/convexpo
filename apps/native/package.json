@@ -12,18 +12,18 @@
 		"web": "expo start --web"
 	},
 	"dependencies": {
-		"@better-auth/expo": "1.4.9",
-		"@convex-dev/better-auth": "^0.10.11",
+		"@better-auth/expo": "catalog:",
+		"@convex-dev/better-auth": "catalog:",
 		"@expo/metro-runtime": "~55.0.6",
 		"@expo/vector-icons": "^15.0.3",
 		"@gorhom/bottom-sheet": "^5",
-		"@my-better-t-app/backend": "workspace:*",
-		"@my-better-t-app/env": "workspace:*",
+		"@app/backend": "workspace:*",
+		"@app/env": "workspace:*",
 		"@react-navigation/elements": "^2.8.1",
 		"@tanstack/react-form": "^1.28.0",
-		"better-auth": "1.4.9",
-		"convex": "^1.32.0",
-		"dotenv": "^17.2.2",
+		"better-auth": "catalog:",
+		"convex": "catalog:",
+		"dotenv": "catalog:",
 		"expo": "^55.0.0",
 		"expo-constants": "~55.0.7",
 		"expo-font": "~55.0.4",
@@ -51,13 +51,13 @@
 		"tailwind-variants": "^3.2.2",
 		"tailwindcss": "^4.1.18",
 		"uniwind": "^1.4.0",
-		"zod": "^4.1.13"
+		"zod": "catalog:"
 	},
 	"devDependencies": {
-		"@my-better-t-app/config": "workspace:*",
+		"@app/config": "workspace:*",
 		"@react-navigation/native-stack": "^7.14.2",
 		"@types/node": "^24.10.0",
 		"@types/react": "~19.2.10",
-		"typescript": "^5"
+		"typescript": "catalog:"
 	}
 }

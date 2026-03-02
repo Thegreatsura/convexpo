@@ -8,7 +8,10 @@ import { query } from "./_generated/server";
 import authConfig from "./auth.config";
 
 const siteUrl = process.env.SITE_URL || "http://localhost:8081";
-const nativeAppUrl = process.env.NATIVE_APP_URL || "my-better-t-app://";
+const nativeAppUrl = process.env.NATIVE_APP_URL || "myapp://";
+// const appleBundleId = process.env.APPLE_APP_BUNDLE_IDENTIFIER || "";
+// const googleClientId = process.env.GOOGLE_CLIENT_ID || "";
+// const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET || "";
 
 export const authComponent = createClient<DataModel>(components.betterAuth);
 
@@ -19,6 +22,18 @@ function createAuth(ctx: GenericCtx<DataModel>) {
 		emailAndPassword: {
 			enabled: true,
 			requireEmailVerification: false,
+		},
+		socialProviders: {
+			// TODO: if only doing native auth do the appbundleID only!!!
+			// apple: {
+			// 	clientId: " ",
+			// 	clientSecret: " ",
+			// 	appBundleIdentifier: appleBundleId,
+			// },
+			// google: {
+			// 	clientId: googleClientId,
+			// 	clientSecret: googleClientSecret,
+			// },
 		},
 		plugins: [
 			expo(),

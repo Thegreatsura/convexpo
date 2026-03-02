@@ -1,25 +1,46 @@
 {
-  "expo": {
-    "scheme": "my-better-t-app",
-    "userInterfaceStyle": "automatic",
-    "orientation": "default",
-    "web": {
-      "bundler": "metro"
-    },
-    "name": "my-better-t-app",
-    "slug": "my-better-t-app",
-    "plugins": [
-      "expo-font"
-    ],
-    "experiments": {
-      "typedRoutes": true,
-      "reactCompiler": true
-    },
-    "android": {
-      "package": "com.x0rtbo.mybettertapp"
-    },
-    "ios": {
-      "bundleIdentifier": "com.x0rtbo.mybettertapp"
-    }
-  }
+	"expo": {
+		"name": "My App",
+		"slug": "myapp",
+		"version": "1.0.0",
+		"scheme": "myapp",
+		"orientation": "portrait",
+		"icon": "./assets/icon.png",
+		"userInterfaceStyle": "automatic",
+		"web": {
+			"bundler": "metro",
+			"output": "static",
+			"favicon": "./assets/favicon.png"
+		},
+		"plugins": [
+			[
+				"expo-splash-screen",
+				{
+					"backgroundColor": "#ffffff",
+					"image": "./assets/logo-b.png",
+					"dark": {
+						"image": "./assets/logo-w.png",
+						"backgroundColor": "#000000"
+					}
+				}
+			],
+			"expo-font",
+			"expo-secure-store",
+			"expo-web-browser"
+		],
+		"experiments": {
+			"typedRoutes": true,
+			"reactCompiler": true
+		},
+		"ios": {
+			"bundleIdentifier": "com.example.myapp"
+		},
+		"android": {
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/adaptive-icon.png",
+				"backgroundColor": "#ffffff"
+			},
+			"package": "com.example.myapp"
+		}
+	}
 }
