@@ -31,7 +31,7 @@ export const sendEmail = async (
 		 * IMPORTANT: The 'from' email domain MUST be verified in your Resend account.
 		 * You cannot use test mode for authentication emails - a verified domain is required.
 		 */
-		from: process.env.RESEND_AUTH_EMAIL!,
+		from: process.env.RESEND_AUTH_EMAIL ?? "",
 		to,
 		subject,
 		html,
