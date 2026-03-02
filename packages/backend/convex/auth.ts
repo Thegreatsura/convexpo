@@ -40,13 +40,13 @@ function createAuth(ctx: GenericCtx<DataModel>) {
 			// 	});
 			// },
 		},
-		socialProviders: {
-			// TODO: if only doing native auth do the appbundleID only!!!
-			// apple: {
-			// 	clientId: " ",
-			// 	clientSecret: " ",
-			// 	appBundleIdentifier: appleBundleId,
-			// },
+			socialProviders: {
+				// TODO: if only doing native auth do the appbundleID only!!!
+				// apple: {
+				// 	clientId: "", // keep empty for mobile-only setup
+				// 	clientSecret: "", // keep empty for mobile-only setup
+				// 	appBundleIdentifier: appleBundleId,
+				// },
 			// google: {
 			// 	clientId: googleClientId,
 			// 	clientSecret: googleClientSecret,

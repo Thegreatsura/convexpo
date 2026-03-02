@@ -63,13 +63,9 @@ Update `apps/native/app.json` with your app identity:
 }
 ```
 
-Then update the deep link scheme in `packages/backend/convex/auth.ts` to match:
+Deep-link backend configuration is handled later when you enable auth redirects.
 
-```ts
-const nativeAppUrl = process.env.NATIVE_APP_URL || "yourapp://";
-```
-
-> **Note:** The `scheme` in app.json must match the URL scheme in auth.ts for OAuth redirects to work correctly.
+> **Note:** Keep `expo.scheme` in `app.json` aligned with the backend `NATIVE_APP_URL` value (set later) for OAuth redirects.
 
 ## Authentication Providers
 
@@ -99,12 +95,12 @@ This starter includes multiple authentication methods using Convex + Better Auth
    ```bash
    bun dev
    ```
-   In the **native#dev** terminal pane you should see your **Expo Go mobile URL scheme**
+   In the **native#dev** terminal pane you should see Metro start successfully:
 
     ```
-   Metro waiting on exp://xxx.xxx.x.xx:xxxx
+   Metro waiting on ...
    ```
-    > **⚠️ IMPORTANT:** if using expo go  **save for later**, you’ll need it for the backend environment variable. If using a dev build, we'll use the app `schema` from app.json for this.
+    > You do not need to copy an Expo Go URL for backend env setup.
 
 4. Configure Convex Backend
 In the **@app/backend** terminal pane, the Convex wizard will prompt:
@@ -135,13 +131,10 @@ In the **@app/backend** terminal pane, the Convex wizard will prompt:
     ```bash
     npx convex env set BETTER_AUTH_SECRET=$(openssl rand -base64 32)
       ```
-    set your mobile app url for deep linking **(from step 3)**
+    Set your native app URL for deep linking when you configure OAuth redirects.
     ```bash
-    # For Expo Go development
-    npx convex env set EXPO_MOBILE_URL=exp://xxx.xxx.x.xx:xxxx
-
-    # For custom app scheme (dev builds) - use your scheme from apps/native/app.json
-    npx convex env set EXPO_MOBILE_URL=myapp://
+    # Use the same scheme from apps/native/app.json (example: "myapp")
+    npx convex env set NATIVE_APP_URL=myapp://
     ```
 
 
@@ -180,8 +173,6 @@ In the **@app/backend** terminal pane, the Convex wizard will prompt:
 > **⚠️ IMPORTANT:** The Convex server may take a short time to warm up on first run after any method above (index creation).
 
 ## Google OAuth
-
-Docs: [Better Auth Google Docs](https://www.better-auth.com/docs/authentication/google) => Follow Part 1
 
 ### Prerequisites
 
@@ -225,18 +216,25 @@ npx convex env set GOOGLE_CLIENT_SECRET <key>
 npx convex env set GOOGLE_CLIENT_ID <key>
 ```
 
-Uncomment Google in `packages/backend/convex/lib/betterAuth/createAuth.ts`
+In `packages/backend/convex/auth.ts`, uncomment the Google env constants and provider block:
 
 ```ts
+// const googleClientId = process.env.GOOGLE_CLIENT_ID || "";
+// const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET || "";
+
 // socialProviders: {
 //   google: {
-//     clientId: requireEnv("GOOGLE_CLIENT_ID"),
-//     clientSecret: requireEnv("GOOGLE_CLIENT_SECRET"),
+//     clientId: googleClientId,
+//     clientSecret: googleClientSecret,
 //   },
 // },
 ```
 
-Expo usage lives in `apps/native/app/(root)/(auth)/landing.tsx`
+Expo usage lives in:
+```
+apps/native/lib/oauth/useGoogleAuth.ts
+apps/native/app/(root)/(auth)/landing.tsx
+```
 
 now done => `bun dev` from root => will take a moment for index creation if first run
 ## Email & Password
@@ -277,7 +275,7 @@ now done => `bun dev` from root => will take a moment for index creation if firs
   npx convex env set RESEND_AUTH_EMAIL=auth@yourdomain.com
   ```
 
-  Uncomment Google in `packages/backend/convex/lib/betterAuth/createAuth.ts`
+  In `packages/backend/convex/auth.ts`, uncomment `sendResetPassword` in the `emailAndPassword` block if you want reset emails:
 
 ```ts
 	// emailAndPassword: {
@@ -306,7 +304,7 @@ create a EAS Build it should ask you to provision ... this and that and to setup
 
 on successful EAS Build you should now see in Apple Developer > Account > Identifiers > your app with the bundle ID from app.json (e.g., `com.example.myapp`) > press on it > Sign in With Apple > Enable.
 
-Uncomment Apple in `packages/backend/convex/lib/betterAuth/createAuth.ts`:
+In `packages/backend/convex/auth.ts`, uncomment the Apple env constant and provider block:
 
 set the name of com from identifiers to the appBundleIdentifier
 
@@ -316,18 +314,20 @@ npx convex env set APPLE_APP_BUNDLE_IDENTIFIER <key>
 ```
 
 ```ts
+// const appleBundleId = process.env.APPLE_APP_BUNDLE_IDENTIFIER || "";
+
 // socialProviders: {
 //   apple: {
-//     clientId: "",
-//     clientSecret: "",
-//     appBundleIdentifier: requireEnv("APPLE_APP_BUNDLE_IDENTIFIER"),
+//     clientId: "", // keep empty for mobile-only setup
+//     clientSecret: "", // keep empty for mobile-only setup
+//     appBundleIdentifier: appleBundleId,
 //   },
 // },
 ```
 
 Expo usage lives in:
 ```
-apps/native/lib/betterAuth/oauth/useAppleAuth.ts
+apps/native/lib/oauth/useAppleAuth.ts
 ```
 now done => `bun dev` from root => will take a moment for index creation if first run
 
