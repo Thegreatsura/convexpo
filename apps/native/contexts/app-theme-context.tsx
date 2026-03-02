@@ -1,46 +1,43 @@
-import type { ThemeConfig } from "heroui-native";
-import type React from "react";
-import {
-	createContext,
-	useCallback,
-	useContext,
-	useMemo,
-	useState,
-} from "react";
-import { pastelThemes, type ThemeId } from "../themes/pastel-themes";
+import React, { createContext, useCallback, useContext, useMemo } from "react";
+import { Uniwind, useUniwind } from "uniwind";
 
-interface AppThemeContextType {
-	currentThemeId: ThemeId;
-	currentTheme: ThemeConfig | undefined;
-	setThemeById: (id: ThemeId) => void;
-	availableThemes: typeof pastelThemes;
-}
+type ThemeName = "light" | "dark";
+
+type AppThemeContextType = {
+	currentTheme: string;
+	isLight: boolean;
+	isDark: boolean;
+	setTheme: (theme: ThemeName) => void;
+	toggleTheme: () => void;
+};
 
 const AppThemeContext = createContext<AppThemeContextType | undefined>(
 	undefined,
 );
-export const AppThemeProvider: React.FC<{ children: React.ReactNode }> = ({
-	children,
-}) => {
-	const [currentThemeId, setCurrentThemeId] = useState<ThemeId>("default");
 
-	const setThemeById = useCallback((id: ThemeId) => {
-		setCurrentThemeId(id);
+export const AppThemeProvider = ({
+	children,
+}: { children: React.ReactNode }) => {
+	const { theme } = useUniwind();
+
+	const isLight = useMemo(() => {
+		return theme === "light";
+	}, [theme]);
+	const isDark = useMemo(() => {
+		return theme === "dark";
+	}, [theme]);
+
+	const setTheme = useCallback((newTheme: ThemeName) => {
+		Uniwind.setTheme(newTheme);
 	}, []);
 
-	const currentTheme = useMemo(() => {
-		const theme = pastelThemes.find((t) => t.id === currentThemeId);
-		return theme?.config;
-	}, [currentThemeId]);
+	const toggleTheme = useCallback(() => {
+		Uniwind.setTheme(theme === "light" ? "dark" : "light");
+	}, [theme]);
 
 	const value = useMemo(
-		() => ({
-			currentThemeId,
-			currentTheme,
-			setThemeById,
-			availableThemes: pastelThemes,
-		}),
-		[currentThemeId, currentTheme, setThemeById],
+		() => ({ currentTheme: theme, isLight, isDark, setTheme, toggleTheme }),
+		[theme, isLight, isDark, setTheme, toggleTheme],
 	);
 
 	return (
@@ -50,10 +47,10 @@ export const AppThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 	);
 };
 
-export const useAppTheme = () => {
+export function useAppTheme() {
 	const context = useContext(AppThemeContext);
 	if (!context) {
 		throw new Error("useAppTheme must be used within AppThemeProvider");
 	}
 	return context;
-};
+}

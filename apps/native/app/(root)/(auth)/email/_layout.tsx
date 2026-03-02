@@ -1,7 +1,8 @@
-import Ionicons from "@expo/vector-icons/build/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
 import { Link, Stack } from "expo-router";
-import { useTheme } from "heroui-native";
+import { useThemeColor } from "heroui-native";
 import { Pressable, Text } from "react-native";
+
 import { useNavigationOptions } from "@/hooks/useNavigationOptions";
 
 export default function EmailLayout() {
@@ -45,11 +46,11 @@ export default function EmailLayout() {
 }
 /* ------------------------------ close button ------------------------------ */
 const CloseButton = () => {
-	const { colors } = useTheme();
+	const foreground = useThemeColor("foreground");
 	return (
 		<Link href=".." asChild>
 			<Pressable className="justify-center rounded-full p-2">
-				<Ionicons name="close" size={22} color={colors.foreground} />
+				<Ionicons name="close" size={22} color={foreground} />
 			</Pressable>
 		</Link>
 	);

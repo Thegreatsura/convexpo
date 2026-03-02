@@ -1,3 +1,49 @@
-import { authComponent } from "./lib/betterAuth";
+import { expo } from "@better-auth/expo";
+import { createClient, type GenericCtx } from "@convex-dev/better-auth";
+import { convex, crossDomain } from "@convex-dev/better-auth/plugins";
+import { betterAuth } from "better-auth/minimal";
 
-export const { onCreate, onUpdate, onDelete } = authComponent.triggersApi();
+import type { DataModel } from "./_generated/dataModel";
+
+import { components } from "./_generated/api";
+import { query } from "./_generated/server";
+import authConfig from "./auth.config";
+
+const siteUrl = process.env.SITE_URL || "http://localhost:8081";
+const nativeAppUrl = process.env.NATIVE_APP_URL || "my-better-t-app://";
+
+export const authComponent = createClient<DataModel>(components.betterAuth);
+
+function createAuth(ctx: GenericCtx<DataModel>) {
+	return betterAuth({
+		trustedOrigins: [
+			siteUrl,
+			nativeAppUrl,
+			...(process.env.NODE_ENV === "development"
+				? ["exp://", "exp://**", "exp://192.168.*.*:*/**"]
+				: []),
+		],
+		database: authComponent.adapter(ctx),
+		emailAndPassword: {
+			enabled: true,
+			requireEmailVerification: false,
+		},
+		plugins: [
+			expo(),
+			crossDomain({ siteUrl }),
+			convex({
+				authConfig,
+				jwksRotateOnTokenGenerationError: true,
+			}),
+		],
+	});
+}
+
+export { createAuth };
+
+export const getCurrentUser = query({
+	args: {},
+	handler: async (ctx) => {
+		return await authComponent.safeGetAuthUser(ctx);
+	},
+});

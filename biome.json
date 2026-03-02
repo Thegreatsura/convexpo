@@ -1,5 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
+	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
 	"vcs": {
 		"enabled": false,
 		"clientKind": "git",
@@ -22,9 +22,10 @@
 			"!**/.expo",
 			"!**/.wrangler",
 			"!**/.alchemy",
+			"!**/.svelte-kit",
 			"!**/wrangler.jsonc",
 			"!**/.source",
-			"!**/_generated"
+			"!**/convex/_generated"
 		]
 	},
 	"formatter": {
@@ -36,9 +37,6 @@
 		"enabled": true,
 		"rules": {
 			"recommended": true,
-			"suspicious": {
-				"noUnknownAtRules": "off"
-			},
 			"correctness": {
 				"useExhaustiveDependencies": "info"
 			},
@@ -68,6 +66,11 @@
 	"javascript": {
 		"formatter": {
 			"quoteStyle": "double"
+		}
+	},
+	"css": {
+		"parser": {
+			"tailwindDirectives": true
 		}
 	}
 }

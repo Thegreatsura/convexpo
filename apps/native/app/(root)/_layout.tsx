@@ -1,15 +1,16 @@
 import { useConvexAuth } from "convex/react";
 import { Stack } from "expo-router";
+
 import { useNavigationOptions } from "@/hooks/useNavigationOptions";
 
 export const unstable_settings = {
-	anchor: "(main)/index",
+	anchor: "(main)/(home)/index",
 };
 
 export default function RootLayout() {
 	const { isAuthenticated } = useConvexAuth();
 	const { root } = useNavigationOptions();
-	/* --------------------------------- return --------------------------------- */
+
 	return (
 		<Stack>
 			{/* AUTH STACK */}
@@ -23,7 +24,6 @@ export default function RootLayout() {
 			</Stack.Protected>
 			{/* AUTHENTICATED NESTED STACK */}
 			<Stack.Protected guard={isAuthenticated}>
-				{/* MAIN STACK*/}
 				<Stack.Screen
 					name="(main)"
 					options={{

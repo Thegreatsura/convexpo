@@ -1,23 +1,23 @@
-import Ionicons from "@expo/vector-icons/build/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
 import { Link, useLocalSearchParams, useRouter } from "expo-router";
-import { Button, Spinner, TextField, useTheme } from "heroui-native";
+import {
+	Button,
+	InputGroup,
+	Spinner,
+	TextField,
+	useThemeColor,
+} from "heroui-native";
 import { useState } from "react";
 import { Alert, Text, View } from "react-native";
+
 import FormHeader, { FormContainer } from "@/components/form";
-import { authClient } from "@/lib/betterAuth/client";
+import { authClient } from "@/lib/auth-client";
 
 export default function ResetPasswordRoute() {
-	const { colors } = useTheme();
+	const muted = useThemeColor("muted");
+	const foreground = useThemeColor("foreground");
 	const router = useRouter();
-	// const
-	/**
-	 * We are using proper routing to navigate to the reset password
-	 * we recieve the token from the email,
-	 *
-	 * check docs on the ERROR TYPE
-	 * https://www.better-auth.com/docs/authentication/email-password#request-password-reset
-	 *
-	 */
+
 	const { token, error } = useLocalSearchParams<{
 		token: string;
 		error?: string;
@@ -28,27 +28,20 @@ export default function ResetPasswordRoute() {
 	const [isLoading, setIsLoading] = useState(false);
 	/* ------------------------- handle reset password ------------------------- */
 	const handleResetPassword = async () => {
-		/**
-		 * FEAT: Add your own form validation validation here
-		 * i've been using tanstack form for react native with zod
-		 *
-		 * but this is just a base for you to get started
-		 */
 		if (!password) {
 			Alert.alert("Error", "Please enter your new password");
 			return;
 		}
-
 		if (password !== confirmPassword) {
 			Alert.alert("Error", "Passwords don't match");
 			return;
 		}
-
 		if (password.length < 6) {
 			Alert.alert("Error", "Password must be at least 6 characters");
 			return;
 		}
-		const { error, data } = await authClient.resetPassword(
+
+		await authClient.resetPassword(
 			{
 				newPassword: password,
 				token: token,
@@ -57,52 +50,39 @@ export default function ResetPasswordRoute() {
 				onRequest: () => {
 					setIsLoading(true);
 				},
-
 				onError: (ctx) => {
 					setIsLoading(false);
 					Alert.alert("Error", ctx.error.message || "Failed to reset password");
 				},
 				onSuccess: () => {
 					setIsLoading(false);
-					console.log("success!");
 					Alert.alert("Success", "Password reset successfully");
-					/**
-					 * i have a thought to better the ui
-					 *
-					 * you could route to the reset password page but since there is no token
-					 * you can say go check your email with some sort of animation
-					 * then since you're already on that page wait for the token to be sent
-					 * then route to the reset password page
-					 */
 					router.back();
 				},
 			},
 		);
-		console.log(data, error);
 	};
 	/* --------------------------------- invalid token --------------------------------- */
 	if (error === "INVALID_TOKEN" || !token) {
 		return (
 			<View className="flex-1 bg-background">
 				<View className="flex-1 justify-center px-6">
-					<View className="mb-8 text-center">
+					<View className="mb-8">
 						<Text className="mb-4 font-bold text-2xl text-foreground">
 							Invalid Link
 						</Text>
-						<Text className="text-muted-foreground">
+						<Text className="text-muted">
 							This reset link has already been used or is invalid
 						</Text>
 					</View>
 					<Link href="/(root)/(auth)/email/signin" asChild>
 						<Button className="rounded-3xl">
-							<Button.StartContent>
-								<Ionicons
-									name="arrow-back-outline"
-									size={16}
-									color={colors.defaultForeground}
-								/>
-							</Button.StartContent>
-							<Button.LabelContent>Back to Sign In</Button.LabelContent>
+							<Ionicons
+								name="arrow-back-outline"
+								size={16}
+								color={foreground}
+							/>
+							<Button.Label>Back to Sign In</Button.Label>
 						</Button>
 					</Link>
 				</View>
@@ -112,74 +92,57 @@ export default function ResetPasswordRoute() {
 	/* --------------------------------- return --------------------------------- */
 	return (
 		<FormContainer>
-			{/* header */}
 			<FormHeader
 				title="Reset Password"
 				description="Enter your new password to complete the reset"
 			/>
 			{/* new password */}
 			<TextField isRequired>
-				<TextField.Input
-					className="h-16 rounded-3xl"
-					placeholder="Enter your new password"
-					secureTextEntry
-					value={password}
-					onChangeText={setPassword}
-				>
-					<TextField.InputStartContent className="pointer-events-none">
-						<Ionicons
-							name="lock-closed-outline"
-							size={16}
-							color={colors.mutedForeground}
-						/>
-					</TextField.InputStartContent>
-					<TextField.InputEndContent className="pointer-events-none">
-						<Ionicons
-							name="eye-outline"
-							size={16}
-							color={colors.mutedForeground}
-						/>
-					</TextField.InputEndContent>
-				</TextField.Input>
+				<InputGroup>
+					<InputGroup.Prefix isDecorative className="pl-4">
+						<Ionicons name="lock-closed-outline" size={20} color={muted} />
+					</InputGroup.Prefix>
+					<InputGroup.Input
+						className="h-16 rounded-3xl"
+						placeholder="Enter your new password"
+						secureTextEntry
+						value={password}
+						onChangeText={setPassword}
+					/>
+					<InputGroup.Suffix isDecorative className="pr-4">
+						<Ionicons name="eye-outline" size={20} color={muted} />
+					</InputGroup.Suffix>
+				</InputGroup>
 			</TextField>
 			{/* confirm password */}
 			<TextField isRequired>
-				<TextField.Input
-					className="h-16 rounded-3xl"
-					placeholder="Confirm your new password"
-					secureTextEntry
-					value={confirmPassword}
-					onChangeText={setConfirmPassword}
-				>
-					<TextField.InputStartContent className="pointer-events-none pl-2">
-						<Ionicons
-							name="lock-closed-outline"
-							size={20}
-							color={colors.mutedForeground}
-						/>
-					</TextField.InputStartContent>
-					<TextField.InputEndContent className="pointer-events-none pr-2">
-						<Ionicons
-							name="checkmark-outline"
-							size={20}
-							color={colors.mutedForeground}
-						/>
-					</TextField.InputEndContent>
-				</TextField.Input>
+				<InputGroup>
+					<InputGroup.Prefix isDecorative className="pl-4">
+						<Ionicons name="lock-closed-outline" size={20} color={muted} />
+					</InputGroup.Prefix>
+					<InputGroup.Input
+						className="h-16 rounded-3xl"
+						placeholder="Confirm your new password"
+						secureTextEntry
+						value={confirmPassword}
+						onChangeText={setConfirmPassword}
+					/>
+					<InputGroup.Suffix isDecorative className="pr-4">
+						<Ionicons name="checkmark-outline" size={20} color={muted} />
+					</InputGroup.Suffix>
+				</InputGroup>
 			</TextField>
-			{/* submit button */}
+			{/* submit */}
 			<Button
 				onPress={handleResetPassword}
-				disabled={isLoading}
+				isDisabled={isLoading}
 				className="rounded-3xl"
 				size="lg"
 			>
-				<Button.LabelContent>
+				<Button.Label>
 					{isLoading ? "Resetting..." : "Reset Password"}
-				</Button.LabelContent>
-				<Button.EndContent>
-					{isLoading ? <Spinner color={colors.background} /> : null}
-				</Button.EndContent>
+				</Button.Label>
+				{isLoading ? <Spinner size="sm" color="default" /> : null}
 			</Button>
 		</FormContainer>
 	);
