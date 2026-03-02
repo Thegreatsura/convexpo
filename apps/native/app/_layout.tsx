@@ -19,17 +19,17 @@ const convex = new ConvexReactClient(env.EXPO_PUBLIC_CONVEX_URL, {
 export default function Layout() {
 	return (
 		<GestureHandlerRootView className="flex-1">
-			<AppThemeProvider>
-				<HeroUINativeProvider>
-					<ConvexBetterAuthProvider client={convex} authClient={authClient}>
-						<SplashScreenProvider>
-							<KeyboardProvider>
+			<KeyboardProvider>
+				<AppThemeProvider>
+					<HeroUINativeProvider>
+						<ConvexBetterAuthProvider client={convex} authClient={authClient}>
+							<SplashScreenProvider>
 								<Slot />
-							</KeyboardProvider>
-						</SplashScreenProvider>
-					</ConvexBetterAuthProvider>
-				</HeroUINativeProvider>
-			</AppThemeProvider>
+							</SplashScreenProvider>
+						</ConvexBetterAuthProvider>
+					</HeroUINativeProvider>
+				</AppThemeProvider>
+			</KeyboardProvider>
 		</GestureHandlerRootView>
 	);
 }

@@ -1,26 +1,19 @@
-import { Ionicons } from "@expo/vector-icons";
 import * as Linking from "expo-linking";
 import { useRouter } from "expo-router";
-import {
-	Button,
-	InputGroup,
-	Spinner,
-	TextField,
-	useThemeColor,
-} from "heroui-native";
+import { Button, InputGroup, Spinner, TextField } from "heroui-native";
 import { useState } from "react";
 import { Alert } from "react-native";
-
 import FormHeader, { FormContainer } from "@/components/form";
+import { Icon } from "@/components/icon";
+import { useThemeColor } from "@/hooks/useThemeColor";
 import { authClient } from "@/lib/auth-client";
 
 export default function RequestPasswordResetRoute() {
 	const router = useRouter();
-	const muted = useThemeColor("muted");
-	/* ---------------------------------- state --------------------------------- */
+	const accentForeground = useThemeColor("accent-foreground");
 	const [email, setEmail] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
-	/* ------------------------ handle request reset --------------------------- */
+
 	const handleRequestReset = async () => {
 		if (!email.trim()) {
 			Alert.alert("Error", "Please enter your email");
@@ -29,13 +22,11 @@ export default function RequestPasswordResetRoute() {
 
 		await authClient.requestPasswordReset(
 			{
-				email: email,
+				email,
 				redirectTo: Linking.createURL("email/reset-password"),
 			},
 			{
-				onRequest: () => {
-					setIsLoading(true);
-				},
+				onRequest: () => setIsLoading(true),
 				onError: (ctx) => {
 					setIsLoading(false);
 					Alert.alert(
@@ -51,7 +42,7 @@ export default function RequestPasswordResetRoute() {
 			},
 		);
 	};
-	/* --------------------------------- return --------------------------------- */
+
 	return (
 		<FormContainer>
 			<FormHeader
@@ -62,10 +53,9 @@ export default function RequestPasswordResetRoute() {
 			<TextField isRequired>
 				<InputGroup>
 					<InputGroup.Prefix isDecorative className="pl-4">
-						<Ionicons name="mail-outline" size={20} color={muted} />
+						<Icon name="mail-outline" size={20} className="text-muted" />
 					</InputGroup.Prefix>
 					<InputGroup.Input
-						className="h-16 rounded-3xl"
 						placeholder="Enter your email"
 						keyboardType="email-address"
 						autoCapitalize="none"
@@ -75,16 +65,11 @@ export default function RequestPasswordResetRoute() {
 				</InputGroup>
 			</TextField>
 			{/* submit */}
-			<Button
-				onPress={handleRequestReset}
-				isDisabled={isLoading}
-				className="rounded-3xl"
-				size="lg"
-			>
+			<Button onPress={handleRequestReset} isDisabled={isLoading}>
 				<Button.Label>
 					{isLoading ? "Sending..." : "Send Reset Link"}
 				</Button.Label>
-				{isLoading ? <Spinner size="sm" color="default" /> : null}
+				{isLoading ? <Spinner size="sm" color={accentForeground} /> : null}
 			</Button>
 		</FormContainer>
 	);

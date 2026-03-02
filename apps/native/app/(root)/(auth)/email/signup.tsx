@@ -1,19 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
-import {
-	Button,
-	InputGroup,
-	Spinner,
-	TextField,
-	useThemeColor,
-} from "heroui-native";
+import { Button, InputGroup, Spinner, TextField } from "heroui-native";
 import { useState } from "react";
-import { Alert, Text } from "react-native";
-
+import { Alert, Pressable, Text } from "react-native";
 import FormHeader, { FormContainer } from "@/components/form";
+import { useThemeColor } from "@/hooks/useThemeColor";
 import { authClient } from "@/lib/auth-client";
 
 export default function SignUpRoute() {
+	const accentForeground = useThemeColor("accent-foreground");
 	const muted = useThemeColor("muted");
 	/* ---------------------------------- state --------------------------------- */
 	const [name, setName] = useState("");
@@ -74,11 +69,11 @@ export default function SignUpRoute() {
 						<Ionicons name="person-outline" size={20} color={muted} />
 					</InputGroup.Prefix>
 					<InputGroup.Input
-						className="h-16 rounded-3xl"
 						placeholder="Enter your full name"
 						autoCapitalize="words"
 						value={name}
 						onChangeText={setName}
+						textContentType="oneTimeCode"
 					/>
 				</InputGroup>
 			</TextField>
@@ -89,12 +84,12 @@ export default function SignUpRoute() {
 						<Ionicons name="mail-outline" size={20} color={muted} />
 					</InputGroup.Prefix>
 					<InputGroup.Input
-						className="h-16 rounded-3xl"
 						placeholder="Enter your email"
 						keyboardType="email-address"
 						autoCapitalize="none"
 						value={email}
 						onChangeText={setEmail}
+						textContentType="oneTimeCode"
 					/>
 				</InputGroup>
 			</TextField>
@@ -105,7 +100,6 @@ export default function SignUpRoute() {
 						<Ionicons name="lock-closed-outline" size={20} color={muted} />
 					</InputGroup.Prefix>
 					<InputGroup.Input
-						className="h-16 rounded-3xl"
 						placeholder="Enter your password"
 						secureTextEntry
 						value={password}
@@ -123,7 +117,6 @@ export default function SignUpRoute() {
 						<Ionicons name="lock-closed-outline" size={20} color={muted} />
 					</InputGroup.Prefix>
 					<InputGroup.Input
-						className="h-16 rounded-3xl"
 						placeholder="Confirm your password"
 						secureTextEntry
 						value={confirmPassword}
@@ -135,16 +128,11 @@ export default function SignUpRoute() {
 				</InputGroup>
 			</TextField>
 			{/* submit */}
-			<Button
-				onPress={handleSignUp}
-				isDisabled={isLoading}
-				className="rounded-3xl"
-				size="lg"
-			>
+			<Button onPress={handleSignUp} isDisabled={isLoading}>
 				<Button.Label>
 					{isLoading ? "Creating Account..." : "Sign Up"}
 				</Button.Label>
-				{isLoading ? <Spinner size="sm" color="default" /> : null}
+				{isLoading ? <Spinner size="sm" color={accentForeground} /> : null}
 			</Button>
 			<Text className="px-14 text-center text-muted text-sm">
 				by continuing you agree to our{" "}

@@ -1,7 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
-import { Button, useThemeColor } from "heroui-native";
+import { Button } from "heroui-native";
 import { Text, View } from "react-native";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 export default function Landing() {
 	const foreground = useThemeColor("foreground");

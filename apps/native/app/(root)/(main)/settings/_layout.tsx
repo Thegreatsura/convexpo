@@ -2,6 +2,7 @@ import { Stack } from "expo-router";
 import { useState } from "react";
 import { Alert, Pressable, Text } from "react-native";
 
+import { ThemeToggle } from "@/components/theme-toggle";
 import { useNavigationOptions } from "@/hooks/useNavigationOptions";
 import { authClient } from "@/lib/auth-client";
 
@@ -15,6 +16,7 @@ export default function SettingsLayout() {
 				options={{
 					title: "Settings",
 					headerLargeTitle: true,
+					headerLeft: () => <ThemeToggle />,
 					headerRight: () => <SignOutButton />,
 				}}
 			/>

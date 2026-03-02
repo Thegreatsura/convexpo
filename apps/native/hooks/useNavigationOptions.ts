@@ -1,7 +1,7 @@
 import type { NativeStackNavigationOptions } from "@react-navigation/native-stack";
-import { useThemeColor } from "heroui-native";
 import { useMemo } from "react";
 import { Platform } from "react-native";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 export const useNavigationOptions = () => {
 	const foreground = useThemeColor("foreground");
@@ -26,7 +26,7 @@ export const useNavigationOptions = () => {
 			base,
 			root: {
 				contentStyle: { backgroundColor: background },
-			} satisfies NativeStackNavigationOptions,
+			},
 			standard: {
 				...base,
 				...platformHeader,

@@ -1,4 +1,5 @@
-import React, { createContext, useCallback, useContext, useMemo } from "react";
+import type React from "react";
+import { createContext, useCallback, useContext, useMemo } from "react";
 import { Uniwind, useUniwind } from "uniwind";
 
 type ThemeName = "light" | "dark";
@@ -11,22 +12,35 @@ type AppThemeContextType = {
 	toggleTheme: () => void;
 };
 
+// ctx
 const AppThemeContext = createContext<AppThemeContextType | undefined>(
 	undefined,
 );
 
+// ctx hook
+export function useAppTheme() {
+	const context = useContext(AppThemeContext);
+	if (!context) {
+		throw new Error("useAppTheme must be used within AppThemeProvider");
+	}
+	return context;
+}
+
 export const AppThemeProvider = ({
 	children,
-}: { children: React.ReactNode }) => {
+}: {
+	children: React.ReactNode;
+}) => {
 	const { theme } = useUniwind();
-
+	// derrived
 	const isLight = useMemo(() => {
 		return theme === "light";
 	}, [theme]);
+
 	const isDark = useMemo(() => {
 		return theme === "dark";
 	}, [theme]);
-
+	// fns
 	const setTheme = useCallback((newTheme: ThemeName) => {
 		Uniwind.setTheme(newTheme);
 	}, []);
@@ -39,18 +53,10 @@ export const AppThemeProvider = ({
 		() => ({ currentTheme: theme, isLight, isDark, setTheme, toggleTheme }),
 		[theme, isLight, isDark, setTheme, toggleTheme],
 	);
-
+	// return
 	return (
 		<AppThemeContext.Provider value={value}>
 			{children}
 		</AppThemeContext.Provider>
 	);
 };
-
-export function useAppTheme() {
-	const context = useContext(AppThemeContext);
-	if (!context) {
-		throw new Error("useAppTheme must be used within AppThemeProvider");
-	}
-	return context;
-}

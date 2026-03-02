@@ -1,9 +1,10 @@
 import { Ionicons } from "@expo/vector-icons";
 import { api } from "@my-better-t-app/backend";
 import { useConvexAuth, useQuery } from "convex/react";
-import { Button, Spinner, useThemeColor } from "heroui-native";
+import { Button, Spinner } from "heroui-native";
 import { useState } from "react";
 import { Alert, ScrollView, Text, View } from "react-native";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 import { authClient } from "@/lib/auth-client";
 
@@ -67,7 +68,7 @@ export default function SettingsRoute() {
 						<Button.Label>
 							{isDeletingUser ? "Deleting..." : "Delete User"}
 						</Button.Label>
-						{isDeletingUser ? <Spinner size="sm" color="default" /> : null}
+						{isDeletingUser ? <Spinner size="sm" color={foreground} /> : null}
 					</Button>
 				</View>
 			</ScrollView>

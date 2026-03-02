@@ -1,32 +1,24 @@
-import { Ionicons } from "@expo/vector-icons";
 import { Link, useLocalSearchParams, useRouter } from "expo-router";
-import {
-	Button,
-	InputGroup,
-	Spinner,
-	TextField,
-	useThemeColor,
-} from "heroui-native";
+import { Button, InputGroup, Spinner, TextField } from "heroui-native";
 import { useState } from "react";
 import { Alert, Text, View } from "react-native";
-
 import FormHeader, { FormContainer } from "@/components/form";
+import { Icon } from "@/components/icon";
+import { useThemeColor } from "@/hooks/useThemeColor";
 import { authClient } from "@/lib/auth-client";
 
 export default function ResetPasswordRoute() {
-	const muted = useThemeColor("muted");
-	const foreground = useThemeColor("foreground");
 	const router = useRouter();
-
 	const { token, error } = useLocalSearchParams<{
 		token: string;
 		error?: string;
 	}>();
-	/* ---------------------------------- state --------------------------------- */
+
+	const accentForeground = useThemeColor("accent-foreground");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
-	/* ------------------------- handle reset password ------------------------- */
+
 	const handleResetPassword = async () => {
 		if (!password) {
 			Alert.alert("Error", "Please enter your new password");
@@ -42,14 +34,9 @@ export default function ResetPasswordRoute() {
 		}
 
 		await authClient.resetPassword(
+			{ newPassword: password, token },
 			{
-				newPassword: password,
-				token: token,
-			},
-			{
-				onRequest: () => {
-					setIsLoading(true);
-				},
+				onRequest: () => setIsLoading(true),
 				onError: (ctx) => {
 					setIsLoading(false);
 					Alert.alert("Error", ctx.error.message || "Failed to reset password");
@@ -62,10 +49,10 @@ export default function ResetPasswordRoute() {
 			},
 		);
 	};
-	/* --------------------------------- invalid token --------------------------------- */
+
 	if (error === "INVALID_TOKEN" || !token) {
 		return (
-			<View className="flex-1 bg-background">
+			<View className="flex-1">
 				<View className="flex-1 justify-center px-6">
 					<View className="mb-8">
 						<Text className="mb-4 font-bold text-2xl text-foreground">
@@ -76,11 +63,11 @@ export default function ResetPasswordRoute() {
 						</Text>
 					</View>
 					<Link href="/(root)/(auth)/email/signin" asChild>
-						<Button className="rounded-3xl">
-							<Ionicons
+						<Button>
+							<Icon
 								name="arrow-back-outline"
 								size={16}
-								color={foreground}
+								className="text-accent-foreground"
 							/>
 							<Button.Label>Back to Sign In</Button.Label>
 						</Button>
@@ -89,7 +76,7 @@ export default function ResetPasswordRoute() {
 			</View>
 		);
 	}
-	/* --------------------------------- return --------------------------------- */
+
 	return (
 		<FormContainer>
 			<FormHeader
@@ -100,17 +87,16 @@ export default function ResetPasswordRoute() {
 			<TextField isRequired>
 				<InputGroup>
 					<InputGroup.Prefix isDecorative className="pl-4">
-						<Ionicons name="lock-closed-outline" size={20} color={muted} />
+						<Icon name="lock-closed-outline" size={20} className="text-muted" />
 					</InputGroup.Prefix>
 					<InputGroup.Input
-						className="h-16 rounded-3xl"
 						placeholder="Enter your new password"
 						secureTextEntry
 						value={password}
 						onChangeText={setPassword}
 					/>
 					<InputGroup.Suffix isDecorative className="pr-4">
-						<Ionicons name="eye-outline" size={20} color={muted} />
+						<Icon name="eye-outline" size={20} className="text-muted" />
 					</InputGroup.Suffix>
 				</InputGroup>
 			</TextField>
@@ -118,31 +104,25 @@ export default function ResetPasswordRoute() {
 			<TextField isRequired>
 				<InputGroup>
 					<InputGroup.Prefix isDecorative className="pl-4">
-						<Ionicons name="lock-closed-outline" size={20} color={muted} />
+						<Icon name="lock-closed-outline" size={20} className="text-muted" />
 					</InputGroup.Prefix>
 					<InputGroup.Input
-						className="h-16 rounded-3xl"
 						placeholder="Confirm your new password"
 						secureTextEntry
 						value={confirmPassword}
 						onChangeText={setConfirmPassword}
 					/>
 					<InputGroup.Suffix isDecorative className="pr-4">
-						<Ionicons name="checkmark-outline" size={20} color={muted} />
+						<Icon name="checkmark-outline" size={20} className="text-muted" />
 					</InputGroup.Suffix>
 				</InputGroup>
 			</TextField>
 			{/* submit */}
-			<Button
-				onPress={handleResetPassword}
-				isDisabled={isLoading}
-				className="rounded-3xl"
-				size="lg"
-			>
+			<Button onPress={handleResetPassword} isDisabled={isLoading}>
 				<Button.Label>
 					{isLoading ? "Resetting..." : "Reset Password"}
 				</Button.Label>
-				{isLoading ? <Spinner size="sm" color="default" /> : null}
+				{isLoading ? <Spinner size="sm" color={accentForeground} /> : null}
 			</Button>
 		</FormContainer>
 	);

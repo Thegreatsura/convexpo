@@ -1,6 +1,5 @@
 import { Stack } from "expo-router";
 
-import { ThemeToggle } from "@/components/theme-toggle";
 import { useNavigationOptions } from "@/hooks/useNavigationOptions";
 
 export default function HomeLayout() {
@@ -13,7 +12,6 @@ export default function HomeLayout() {
 				options={{
 					title: "Home",
 					headerLargeTitle: true,
-					headerLeft: () => <ThemeToggle />,
 				}}
 			/>
 		</Stack>

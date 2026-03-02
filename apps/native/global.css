@@ -2,4 +2,63 @@
 @import "uniwind";
 @import "heroui-native/styles";
 
-@source './node_modules/heroui-native/lib';
+@source "./node_modules/heroui-native/lib";
+
+/* --------------------------------- Theme ---------------------------------- */
+/* Override HeroUI variables below. Only set what you want to change —        */
+/* everything else falls back to HeroUI defaults.                             */
+/* All variables: https://v3.heroui.com/docs/native/getting-started/colors    */
+
+@layer theme {
+	@variant light {
+		/* Brand */
+		--accent: oklch(0.17 0.015 80);
+		--accent-foreground: oklch(0.95 0.02 80);
+
+		/* Base */
+		/* --background: oklch(0.97 0 0); */
+		/* --foreground: oklch(0.21 0.006 286); */
+
+		/* Surfaces */
+		/* --surface: oklch(1 0 0); */
+		/* --surface-foreground: var(--foreground); */
+		/* --overlay: oklch(1 0 0); */
+		/* --overlay-foreground: var(--foreground); */
+
+		/* Status */
+		/* --success: oklch(0.73 0.19 151); */
+		/* --warning: oklch(0.78 0.16 72); */
+		/* --danger: oklch(0.65 0.23 26); */
+	}
+
+	@variant dark {
+		/* Brand */
+		--accent: oklch(0.95 0.02 80);
+		--accent-foreground: oklch(0.17 0.015 80);
+
+		/* Base */
+		/* --background: oklch(0.12 0.005 286); */
+		/* --foreground: oklch(0.99 0 0); */
+
+		/* Surfaces */
+		/* --surface: oklch(0.21 0.006 286); */
+		/* --surface-foreground: var(--foreground); */
+		/* --overlay: oklch(0.21 0.006 286); */
+		/* --overlay-foreground: var(--foreground); */
+
+		/* Status */
+		/* --success: oklch(0.73 0.19 151); */
+		/* --warning: oklch(0.82 0.14 76); */
+		/* --danger: oklch(0.59 0.2 25); */
+	}
+}
+
+/* To add custom colors beyond HeroUI's built-in set:                         */
+/*                                                                            */
+/* 1. Define the variable in both light/dark variants above                    */
+/* 2. Register it with Tailwind so you can use bg-info, text-info, etc:       */
+/*                                                                            */
+/* @theme inline {                                                            */
+/*   --color-info: var(--info);                                               */
+/*   --color-info-foreground: var(--info-foreground);                          */
+/* }                                                                          */
