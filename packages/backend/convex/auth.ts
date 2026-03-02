@@ -2,10 +2,8 @@ import { expo } from "@better-auth/expo";
 import { createClient, type GenericCtx } from "@convex-dev/better-auth";
 import { convex, crossDomain } from "@convex-dev/better-auth/plugins";
 import { betterAuth } from "better-auth/minimal";
-
-import type { DataModel } from "./_generated/dataModel";
-
 import { components } from "./_generated/api";
+import type { DataModel } from "./_generated/dataModel";
 import { query } from "./_generated/server";
 import authConfig from "./auth.config";
 
@@ -16,13 +14,7 @@ export const authComponent = createClient<DataModel>(components.betterAuth);
 
 function createAuth(ctx: GenericCtx<DataModel>) {
 	return betterAuth({
-		trustedOrigins: [
-			siteUrl,
-			nativeAppUrl,
-			...(process.env.NODE_ENV === "development"
-				? ["exp://", "exp://**", "exp://192.168.*.*:*/**"]
-				: []),
-		],
+		trustedOrigins: [siteUrl, nativeAppUrl],
 		database: authComponent.adapter(ctx),
 		emailAndPassword: {
 			enabled: true,
