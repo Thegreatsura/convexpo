@@ -17,11 +17,28 @@ export const authComponent = createClient<DataModel>(components.betterAuth);
 
 function createAuth(ctx: GenericCtx<DataModel>) {
 	return betterAuth({
-		trustedOrigins: [siteUrl, nativeAppUrl],
+		trustedOrigins: [
+			siteUrl,
+			nativeAppUrl,
+			...(process.env.NODE_ENV === "development"
+				? ["exp://", "exp://**", "exp://192.168.*.*:*/**"]
+				: []),
+		],
+		user: {
+			deleteUser: {
+				enabled: true,
+			},
+		},
 		database: authComponent.adapter(ctx),
 		emailAndPassword: {
 			enabled: true,
 			requireEmailVerification: false,
+			// sendResetPassword: async ({ user, url }) => {
+			// 	await sendResetPassword(requireActionCtx(ctx), {
+			// 		to: user.email,
+			// 		url,
+			// 	});
+			// },
 		},
 		socialProviders: {
 			// TODO: if only doing native auth do the appbundleID only!!!

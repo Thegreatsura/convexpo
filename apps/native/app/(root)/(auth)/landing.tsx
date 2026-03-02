@@ -3,8 +3,13 @@ import { Button } from "heroui-native";
 import { Text, View } from "react-native";
 
 import { Icon } from "@/components/icon";
+import { useAppleAuth } from "@/lib/oauth/useAppleAuth";
+import { useGoogleAuth } from "@/lib/oauth/useGoogleAuth";
 
 export default function Landing() {
+	const oAuthGoogle = useGoogleAuth();
+	const oAuthApple = useAppleAuth();
+
 	return (
 		<View className="flex-1 gap-4 px-8 pt-safe pb-safe">
 			<View className="flex-1 justify-end">
@@ -12,13 +17,25 @@ export default function Landing() {
 					Convexpo
 				</Text>
 			</View>
-			{/* OAuth buttons — placeholder for now */}
+			{/* OAuth buttons */}
 			<View className="w-full flex-row gap-4">
-				<Button className="flex-1" size="lg" variant="tertiary" isDisabled>
+				<Button
+					className="flex-1"
+					size="lg"
+					variant="tertiary"
+					isDisabled={oAuthGoogle.isLoading}
+					onPress={oAuthGoogle.signIn}
+				>
 					<Icon name="logo-google" size={20} className="text-foreground" />
 					<Button.Label>Google</Button.Label>
 				</Button>
-				<Button className="flex-1" size="lg" variant="tertiary" isDisabled>
+				<Button
+					className="flex-1"
+					size="lg"
+					variant="tertiary"
+					isDisabled={oAuthApple.isLoading}
+					onPress={oAuthApple.signIn}
+				>
 					<Icon name="logo-apple" size={20} className="text-foreground" />
 					<Button.Label>Apple</Button.Label>
 				</Button>

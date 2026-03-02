@@ -23,9 +23,9 @@ This project was bootstrapped with **[Better-T-Stack](https://github.com/AmanVar
 ## Tech Stack
 
 * **TypeScript** — static typing for safety and DX
-* **[React Native (Expo)](https://expo.dev/)** — SDK 54
+* **[React Native (Expo)](https://expo.dev/)** — SDK 55
 * **[Tailwind (NativeWind)](https://www.nativewind.dev/)** — Tailwind for React Native
-* **[Hero UI Native](https://github.com/heroui-inc/heroui-native)** — modern React Native UI library 🚧 *Alpha*
+* **[Hero UI Native](https://heroui.com/docs/native)** — modern React Native UI library 🚧 *RC*
 * **[Convex](https://docs.convex.dev/)** — reactive backend-as-a-service
 * **[Better Auth](https://convex-better-auth.netlify.app/)** — auth primitives on Convex
 * **[Biome](https://biomejs.dev/)** — fast formatting and linting
