@@ -22,6 +22,7 @@ uniwind-types.d.ts
 # Environment
 .env
 .env.*
+!.env.example
 
 # Native builds
 ios
